@@ -1,12 +1,25 @@
 import { initState } from "./state.js";
 
+export type StartCommands = {
+    command: string;
+    args: string[];
+}
 
 export function cleanInput(input: string): string[] {
     return input.toLowerCase().trim().split(" ").filter((word) => word !== "");
 }
 
-export function startREPL() {
+export async function startREPL(startCmds?: StartCommands) {
     const state = initState();
+    const cmds = state.commands;
+    if (startCmds) {
+        const startCommand = cleanInput(startCmds.command)[0];
+        if (!cmds[startCommand]) {
+            console.log(`Command "${startCmds.command}" not found.`);
+        } else {
+            await cmds[startCommand].callback(state, ...startCmds.args);
+        }
+    }
 
     state.interface.prompt();
 
@@ -17,7 +30,7 @@ export function startREPL() {
             state.interface.prompt();
             return;
         }
-        const cmds = state.commands;
+
 
         const command = words[0];
 
