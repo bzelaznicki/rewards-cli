@@ -23,6 +23,12 @@ export function startREPL() {
 
         const args = words.slice(1);
 
+        if (!cmds[command]) {
+            console.log(`Command "${command}" not found.`);
+            state.interface.prompt();
+            return;
+        }
+
         await cmds[command].callback(state, ...args);
 
         if (command !== "exit"){

@@ -1,5 +1,7 @@
 import { createInterface, type Interface } from "readline"
 import { commandEarn } from "./command_earn.js";
+import { commandExit } from "./command_exit.js";
+import { commandRedeem } from "./command_redeem.js";
 
 type CLICommand = {
     name: string;
@@ -25,6 +27,14 @@ export function initState(): State {
             name: "earn",
             callback: commandEarn,
         },
+        redeem: {
+            name: "redeem",
+            callback: commandRedeem,
+        },
+        exit: {
+            name: "exit",
+            callback: commandExit
+        }
     }
 
     const users: Record<string, number> = {}
